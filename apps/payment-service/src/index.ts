@@ -2,7 +2,7 @@ import express, {Request, Response} from "express";
 import cors from "cors";
 
 const app = express();
-const port = 8000;
+const port = 8001;
 
 app.use(
   cors({
@@ -18,10 +18,6 @@ app.get('/health', (req: Request, res: Response) => {
     timestamp: Date.now(),
   })
 })
-
-// app.get("/", (req: Request, res: Response) => {
-//   res.send("Hello world")
-// })
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
