@@ -7,18 +7,34 @@ const AuthenticationTestPage = () => {
 
   const fetchExternalData = async () => {
     const token = await getToken();
-    console.log("token", token);
-    // Fetch data from an external API
+
+    // console.log("token:", token);
+
     const response = await fetch("http://localhost:8000/authentication", {
-     method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
 
-    return response.json();
+    const data = await response.json();
+    console.log(data);
   };
-  return <div>AuthenticationTestPage</div>;
+
+  if (!isLoaded) {
+    return <div>Loading...</div>;
+  }
+
+  if (!isSignedIn) {
+    return <div>Please sign in</div>;
+  }
+
+  return (
+    <div>
+      <button onClick={fetchExternalData}>
+        Test Authentication
+      </button>
+    </div>
+  );
 };
 
 export default AuthenticationTestPage;

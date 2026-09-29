@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import { clerkMiddleware, getAuth } from "@clerk/express";
+import { isValidUser } from "./middleware/authmiddleware.js";
 
 const app = express();
 const port = 8000;
@@ -21,13 +22,11 @@ app.get("/health", (req: Request, res: Response) => {
   });
 });
 
-app.post("/authentication", (req: Request, res: Response) => {
-  const { isAuthenticated, userId } = getAuth(req);
-  if (!isAuthenticated) {
-    res.status(401).json({ error: "Unauthorized" });
-    return;
-  }
-  res.send("Hello world");
+app.get("/authentication", isValidUser, (req: Request, res: Response) => {
+  res.status(200).json({
+    message: "Authenticated successfully",
+    userId: req.userId,
+  });
 });
 
 app.listen(port, () => {
