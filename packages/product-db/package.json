@@ -8,7 +8,9 @@
     "db:deploy": "prisma migrate deploy"
   },
   "devDependencies": {
-    "prisma": "^7.10.0"
+    "prisma": "^7.10.0",
+    "@types/node": "^24.3.1",
+    "@repo/typescript-config": "workspace:*"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.10.0",
@@ -18,5 +20,5 @@
   },
   "exports": {
     ".": "./src/index.ts"
-  } 
+  }
 }

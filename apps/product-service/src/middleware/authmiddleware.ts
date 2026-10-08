@@ -14,13 +14,20 @@ export const isValidUser = (
   res: Response,
   next: NextFunction,
 ) => {
+  // console.log("Authorization:", req.headers.authorization);
+  // console.log("Cookie:", req.headers.cookie);
+
   const { isAuthenticated, userId } = getAuth(req);
+
+  // console.log("Auth:", isAuthenticated);
+  // console.log("User:", userId);
 
   if (!isAuthenticated) {
     return res.status(401).json({
       error: "Unauthorized!",
     });
   }
+
   req.userId = userId;
   next();
 };
