@@ -32,8 +32,8 @@ app.get("/authentication", isValidUser, (req: Request, res: Response) => {
   });
 });
 
-app.use("/product", productRouter);
-app.use("/category", categoryRoute);
+app.use("/products", productRouter);
+app.use("/categories", categoryRoute);
 
 app.use((err: any, req: Request, res: Response) => {
   console.log("Root error", err);
