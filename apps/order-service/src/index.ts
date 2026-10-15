@@ -2,6 +2,8 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import { clerkMiddleware, getAuth } from "@clerk/express";
 import { isValidUser } from "./middleware/authmiddleware.js";
+import orderRoute from "./routes/order.route.js";
+import { connectOrderDB } from "@repo/order-db";
 
 const app = express();
 const port = 8002;
@@ -29,6 +31,19 @@ app.get("/authentication", isValidUser, (req: Request, res: Response) => {
   });
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+app.use("/orders", orderRoute);
+
+async function startServer() {
+  try {
+    await connectOrderDB();
+
+    app.listen(port, () => {
+      console.log(`Server listening on port ${port}`);
+    });
+  } catch (error) {
+    console.error("Failed to start server:", error);
+    process.exit(1);
+  }
+}
+
+startServer();
