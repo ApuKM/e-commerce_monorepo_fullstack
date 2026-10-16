@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import { clerkMiddleware } from "@clerk/express";
 import { isValidUser } from "./middleware/authmiddleware.js";
+import stripe from "./utils/stripe.js";
 
 const app = express();
 const port = 8001;
@@ -27,6 +28,25 @@ app.get("/authentication", isValidUser, (req: Request, res: Response) => {
     message: "Authenticated successfully",
     userId: req.userId,
   });
+});
+
+app.post("/create-stripe-product", async (req: Request, res: Response) => {
+  const response = await stripe.products.create({
+    id: "123",
+    name: "Test product",
+    default_price_data: {
+      currency: "usd",
+      unit_amount: 10 * 100,
+    },
+  });
+  return res.send(response);
+});
+
+app.get("/stripe-product-price", async (req: Request, res: Response) => {
+  const response = await stripe.prices.list({
+    product: "123",
+  });
+  return res.send(response);
 });
 
 app.listen(port, () => {
