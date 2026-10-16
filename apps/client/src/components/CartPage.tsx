@@ -1,15 +1,14 @@
 "use client";
 
-import PaymentForm from "@/components/PaymentForm";
 import ShippingForm from "@/components/ShippingForm";
 import useCartStore from "@/stores/cartStore";
-import { ShippingFormType } from "@/types";
+import { ShippingFormType } from "@repo/types";
 import { ArrowRight, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-const steps = [ 
+const steps = [
   {
     id: 1,
     title: "Shopping Cart",
@@ -90,13 +89,13 @@ const CartPage = () => {
 
   const { cart, removeFromCart } = useCartStore();
 
-   const discountRate = 0.1;
+  const discountRate = 0.1;
   const shippingFee = 10;
   const subtotal = cart.reduce(
     (acc, item) => acc + item.price * item.quantity,
-    0
+    0,
   );
-  const total = subtotal - (subtotal * discountRate) + shippingFee;
+  const total = subtotal - subtotal * discountRate + shippingFee;
 
   return (
     <div className="flex flex-col gap-8 items-center justify-center mt-12">
@@ -144,7 +143,11 @@ const CartPage = () => {
                   {/* IMAGE */}
                   <div className="relative w-32 h-32 bg-gray-50 rounded-lg overflow-hidden">
                     <Image
-                      src={item?.images[item.selectedColor] || ""}
+                      src={
+                        (item?.images as Record<string, string>)[
+                          item.selectedColor
+                        ] || ""
+                      }
                       alt={item.name}
                       fill
                       className="object-contain"
@@ -179,7 +182,7 @@ const CartPage = () => {
           ) : activeStep === 2 ? (
             <ShippingForm setShippingForm={setShippingForm} />
           ) : activeStep === 3 && shippingForm ? (
-            <PaymentForm />
+            "TODO: Payment form stripe"
           ) : (
             <p className="text-sm text-gray-500">
               Please fill in the shipping form to continue.
@@ -192,14 +195,13 @@ const CartPage = () => {
           <div className="flex flex-col gap-4">
             <div className="flex justify-between text-sm">
               <p className="text-gray-500">Subtotal</p>
-              <p className="font-medium">
-                ${subtotal.toFixed(2)}
-                
-              </p>
+              <p className="font-medium">${subtotal.toFixed(2)}</p>
             </div>
             <div className="flex justify-between text-sm">
               <p className="text-gray-500">Discount(10%)</p>
-              <p className="font-medium">${(subtotal * discountRate).toFixed(2)}</p>
+              <p className="font-medium">
+                ${(subtotal * discountRate).toFixed(2)}
+              </p>
             </div>
             <div className="flex justify-between text-sm">
               <p className="text-gray-500">Shipping Fee</p>
@@ -208,10 +210,7 @@ const CartPage = () => {
             <hr className="border-gray-200" />
             <div className="flex justify-between">
               <p className="text-gray-800 font-semibold">Total</p>
-              <p className="font-medium">
-                $
-                {total.toFixed(2)}
-              </p>
+              <p className="font-medium">${total.toFixed(2)}</p>
             </div>
           </div>
           {activeStep === 1 && (

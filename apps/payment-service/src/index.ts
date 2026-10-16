@@ -30,24 +30,24 @@ app.get("/authentication", isValidUser, (req: Request, res: Response) => {
   });
 });
 
-app.post("/create-stripe-product", async (req: Request, res: Response) => {
-  const response = await stripe.products.create({
-    id: "123",
-    name: "Test product",
-    default_price_data: {
-      currency: "usd",
-      unit_amount: 10 * 100,
-    },
-  });
-  return res.send(response);
-});
+// app.post("/create-stripe-product", async (req: Request, res: Response) => {
+//   const response = await stripe.products.create({
+//     id: "123",
+//     name: "Test product",
+//     default_price_data: {
+//       currency: "usd",
+//       unit_amount: 10 * 100,
+//     },
+//   });
+//   return res.send(response);
+// });
 
-app.get("/stripe-product-price", async (req: Request, res: Response) => {
-  const response = await stripe.prices.list({
-    product: "123",
-  });
-  return res.send(response);
-});
+// app.get("/stripe-product-price", async (req: Request, res: Response) => {
+//   const response = await stripe.prices.list({
+//     product: "123",
+//   });
+//   return res.send(response);
+// });
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
