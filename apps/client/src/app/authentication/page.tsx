@@ -8,11 +8,11 @@ const AuthenticationTestPage = () => {
   const fetchExternalData = async () => {
     const token = await getToken();
 
-    // console.log("token:", token);
+    console.log("token:", token);
 
     const response = await fetch("http://localhost:8000/authentication", {
       headers: {
-        Authorization: `Bearer ${token}`,
+        authorization: `Bearer ${token}`,
       },
     });
 

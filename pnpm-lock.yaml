@@ -388,6 +388,9 @@ importers:
       '@repo/order-db':
         specifier: workspace:*
         version: link:../../packages/order-db
+      '@repo/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       cors:
         specifier: ^2.8.6
         version: 2.8.6
@@ -414,6 +417,12 @@ importers:
         specifier: ^5.2.1
         version: 5.2.1(supports-color@7.2.0)
     devDependencies:
+      '@repo/types':
+        specifier: workspace:*
+        version: link:../../packages/types
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config
       '@types/cors':
         specifier: ^2.8.19
         version: 2.8.19
@@ -436,6 +445,9 @@ importers:
         specifier: ^5.2.1
         version: 5.2.1(supports-color@7.2.0)
     devDependencies:
+      '@repo/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
@@ -519,6 +531,15 @@ importers:
       prisma:
         specifier: ^7.10.0
         version: 7.10.0(@types/react-dom@19.2.5(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@7.0.2)
+
+  packages/types:
+    devDependencies:
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      '@types/node':
+        specifier: ^26.6.5
+        version: 26.6.5
 
   packages/typescript-config: {}
 

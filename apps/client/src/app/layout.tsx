@@ -17,8 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Trendding - Best Clothes",
-  description: "Trendding is the best place to find the best clothes",
+  title: "Trendiing - Best Clothes",
+  description: "Trendiing is the best place to find the best clothes",
 };
 
 export default function RootLayout({
