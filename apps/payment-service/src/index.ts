@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import { clerkMiddleware } from "@clerk/express";
 import { isValidUser } from "./middleware/authmiddleware.js";
-import stripe from "./utils/stripe.js";
+import sessionRouter from "./routes/session.route.js";
 
 const app = express();
 const port = 8001;
@@ -29,6 +29,8 @@ app.get("/authentication", isValidUser, (req: Request, res: Response) => {
     userId: req.userId,
   });
 });
+
+app.use("/sessions", sessionRouter);
 
 // app.post("/create-stripe-product", async (req: Request, res: Response) => {
 //   const response = await stripe.products.create({

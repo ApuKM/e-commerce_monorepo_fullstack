@@ -7,6 +7,7 @@ import { ArrowRight, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import StripePaymentForm from "./StripePaymentForm";
 
 const steps = [
   {
@@ -182,7 +183,7 @@ const CartPage = () => {
           ) : activeStep === 2 ? (
             <ShippingForm setShippingForm={setShippingForm} />
           ) : activeStep === 3 && shippingForm ? (
-            "TODO: Payment form stripe"
+            <StripePaymentForm shippingForm={shippingForm}/>
           ) : (
             <p className="text-sm text-gray-500">
               Please fill in the shipping form to continue.
@@ -190,7 +191,7 @@ const CartPage = () => {
           )}
         </div>
         {/* DETAILS */}
-        <div className="w-full lg:w-5/12 shadow-lg border-1 border-gray-100 p-8 rounded-lg flex flex-col gap-8 h-max">
+        <div className="w-full lg:w-5/12 shadow-lg border border-gray-100 p-8 rounded-lg flex flex-col gap-8 h-max">
           <h2 className="font-semibold">Cart Details</h2>
           <div className="flex flex-col gap-4">
             <div className="flex justify-between text-sm">
