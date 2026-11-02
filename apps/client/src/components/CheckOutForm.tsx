@@ -1,5 +1,5 @@
 import type { ShippingFormType } from "@repo/types";
-import { PaymentElement } from "@stripe/react-stripe-js";
+import { PaymentElement } from "@stripe/react-stripe-js/checkout";
 import { useCheckoutElements } from "@stripe/react-stripe-js/checkout";
 import { ConfirmError } from "@stripe/stripe-js";
 import React from "react";

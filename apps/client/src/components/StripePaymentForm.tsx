@@ -25,6 +25,8 @@ const clientSecret = async (cart: CartItemsType, token: string) => {
     },
   );
 
+  console.log("reasponce", response)
+
   if (!response.ok) {
     throw new Error(
       `Failed to create checkout session: ${response.status} ${response.statusText}`,

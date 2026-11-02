@@ -10,6 +10,8 @@ sessionRouter.post(
   "/create-checkout-session",
   isValidUser,
   async (req: Request, res: Response) => {
+    console.log(req.body)
+    console.log(req.userId)
     const { cart }: { cart: CartItemsType } = req.body;
     const userId = req.userId;
 
@@ -37,6 +39,7 @@ sessionRouter.post(
       return_url: `${process.env.STRIPE_RETURN_URL}/return?session_id={CHECKOUT_SESSION_ID}`,
       integration_identifier: "embedded_web_0001",
     });
+    console.log("stripe_session", session)
     res.json({ checkoutSessionClientSecret: session.client_secret });
   },
 );

@@ -7,6 +7,7 @@ import sessionRouter from "./routes/session.route.js";
 const app = express();
 const port = 8001;
 app.use(clerkMiddleware());
+app.use(express.json());
 
 app.use(
   cors({
