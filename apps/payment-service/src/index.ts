@@ -3,9 +3,13 @@ import cors from "cors";
 import { clerkMiddleware } from "@clerk/express";
 import { isValidUser } from "./middleware/authmiddleware.js";
 import sessionRouter from "./routes/session.route.js";
+import webhookRouter from "./routes/webhook.route.js";
 
 const app = express();
 const port = 8001;
+
+app.use("/webhook", webhookRouter);
+
 app.use(clerkMiddleware());
 app.use(express.json());
 
