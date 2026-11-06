@@ -16,7 +16,8 @@
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "@repo/order-db": "workspace:*",
-    "@repo/types": "workspace:*"
+    "@repo/types": "workspace:*",
+    "@repo/kafka": "workspace:*"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",

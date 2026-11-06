@@ -4,6 +4,7 @@ import { clerkMiddleware, getAuth } from "@clerk/express";
 import { isValidUser } from "./middleware/authmiddleware.js";
 import orderRoute from "./routes/order.route.js";
 import { connectOrderDB } from "@repo/order-db";
+import { consumer, producer } from "./utils/kafka.ts";
 
 const app = express();
 const port = 8002;
@@ -35,7 +36,11 @@ app.use("/orders", orderRoute);
 
 async function startServer() {
   try {
-    await connectOrderDB();
+    Promise.all([
+      await connectOrderDB(),
+      await producer.connect(),
+      await consumer.connect(),
+    ]);
 
     app.listen(port, () => {
       console.log(`Server listening on port ${port}`);

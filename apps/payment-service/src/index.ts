@@ -4,6 +4,8 @@ import { clerkMiddleware } from "@clerk/express";
 import { isValidUser } from "./middleware/authmiddleware.js";
 import sessionRouter from "./routes/session.route.js";
 import webhookRouter from "./routes/webhook.route.js";
+import { consumer, producer } from "./utils/kafka.ts";
+import { runKafkaSubscriptions } from "./utils/subscriptions.ts";
 
 const app = express();
 const port = 8001;
@@ -56,6 +58,19 @@ app.use("/sessions", sessionRouter);
 //   return res.send(response);
 // });
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+const start = async () => {
+  try {
+    Promise.all([await producer.connect(), await consumer.connect()]);
+
+    await runKafkaSubscriptions()
+    
+    app.listen(8000, () => {
+      console.log("Payment service is running on 8001");
+    });
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
+};
+
+start();
