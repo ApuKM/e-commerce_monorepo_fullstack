@@ -6,9 +6,7 @@ export const getOrders = async (req: Request, res: Response) => {
   return res.json(orders);
 };
 
-export const getAnOrder = async (req: Request, res: Response) => {
-  const { userId } = req.params;
-  console.log(userId);
-  const order = await Order.findOne({ userId });
-  return res.json(order);
+export const getUserOrders = async (req: Request, res: Response) => {
+  const orders = await Order.find({ userId: req.userId });
+  return res.json(orders);
 };
