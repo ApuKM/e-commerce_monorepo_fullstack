@@ -40,7 +40,7 @@ webhookRouter.post(
         const lineItems = await stripe.checkout.sessions.listLineItems(
           session.id,
         );
-        //TODO: Create order
+
         producer.send("payment.successful", {
           value: {
             userId: session.client_reference_id,
@@ -55,8 +55,8 @@ webhookRouter.post(
           },
         });
 
-        console.log("Webhook recieved", session);
-        console.log(event);
+        // console.log("Webhook recieved", session);
+        // console.log(event);
         break;
       }
 

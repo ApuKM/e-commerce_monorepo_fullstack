@@ -5,6 +5,7 @@ import { isValidUser } from "./middleware/authmiddleware.js";
 import orderRoute from "./routes/order.route.js";
 import { connectOrderDB } from "@repo/order-db";
 import { consumer, producer } from "./utils/kafka.ts";
+import { runKafkaSubscriptions } from "./utils/subscriptions.ts";
 
 const app = express();
 const port = 8002;
@@ -41,6 +42,8 @@ async function startServer() {
       await producer.connect(),
       await consumer.connect(),
     ]);
+
+    await runKafkaSubscriptions();
 
     app.listen(port, () => {
       console.log(`Server listening on port ${port}`);

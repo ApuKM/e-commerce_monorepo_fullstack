@@ -64,7 +64,7 @@ const start = async () => {
 
     await runKafkaSubscriptions()
     
-    app.listen(8000, () => {
+    app.listen(8001, () => {
       console.log("Payment service is running on 8001");
     });
   } catch (error) {
