@@ -2,14 +2,6 @@
 
 import { cn } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
-
-export type Payment = {
-  id: string;
-  amount: number;
-  username: string;
-  email: string;
-  status: "pending" | "processing" | "success" | "failed";
-};
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,8 +13,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { OrderType } from "@repo/types";
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<OrderType>[] = [
      {
     id: "select",
     header: ({ table }) => (
@@ -42,8 +35,8 @@ export const columns: ColumnDef<Payment>[] = [
     ),
   },
   {
-    accessorKey: "username",
-    header: "User",
+    accessorKey: "_id",
+    header: "ID",
   },
   {
     accessorKey: "email",
@@ -86,14 +79,14 @@ export const columns: ColumnDef<Payment>[] = [
       const formatted = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
-      }).format(amount);
+      }).format(amount / 100);
       return <div className="text-right font-medium">{formatted}</div>;
     },
   },
    {
     id: "actions",
     cell: ({ row }) => {
-      const payment = row.original;
+      const order = row.original;
 
       return (
         <DropdownMenu>
@@ -106,13 +99,13 @@ export const columns: ColumnDef<Payment>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
+              onClick={() => navigator.clipboard.writeText(order._id)}
             >
-              Copy payment ID
+              Copy order ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem>View order details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
