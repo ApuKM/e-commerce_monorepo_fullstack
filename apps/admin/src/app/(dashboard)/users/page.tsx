@@ -2,7 +2,7 @@ import { auth, type User } from "@clerk/nextjs/server";
 import { columns } from "./columns.tsx";
 import { DataTable } from "./data-table.tsx";
 
-const getData = async (): Promise<User[]> => {
+const getData = async (): Promise<{ data: User[]; totalCount: number }> => {
   const { getToken } = await auth();
   const token = await getToken();
   try {
@@ -18,6 +18,7 @@ const getData = async (): Promise<User[]> => {
     return data;
   } catch (err) {
     console.log(err);
+    return { data: [], totalCount: 0 };
   }
 };
 
@@ -28,7 +29,7 @@ const UsersPage = async () => {
       <div className="mb-8 px-4 py-2 bg-secondary rounded-md">
         <h1 className="font-semibold">All Users</h1>
       </div>
-      <DataTable columns={columns} data={data} />
+      <DataTable columns={columns} data={res.data} />
     </div>
   );
 };
