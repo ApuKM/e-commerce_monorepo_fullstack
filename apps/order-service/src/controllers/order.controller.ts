@@ -1,4 +1,6 @@
 import { Order } from "@repo/order-db";
+import { OrderChartType } from "@repo/types";
+import { startOfMonth, subMonths } from "date-fns";
 import { type Request, type Response } from "express";
 
 export const getOrders = async (req: Request, res: Response) => {
@@ -9,4 +11,77 @@ export const getOrders = async (req: Request, res: Response) => {
 export const getUserOrders = async (req: Request, res: Response) => {
   const orders = await Order.find({ userId: req.userId });
   return res.json(orders);
+};
+
+export const getChartOrders = async (req: Request, res: Response) => {
+  const now = new Date();
+  const sixMonthsAgo = startOfMonth(subMonths(now, 5));
+
+  const raw = await Order.aggregate([
+    {
+      $match: {
+        createdAt: { $gte: sixMonthsAgo, $lte: now },
+      },
+    },
+    {
+      $group: {
+        _id: {
+          year: { $year: "$createdAt" },
+          month: { $month: "$createdAt" },
+        },
+        total: { $sum: 1 },
+        successful: {
+          $sum: {
+            $cond: [{ $eq: ["$status", "success"] }, 1, 0],
+          },
+        },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        year: "$_id.year",
+        month: "$_id.month",
+        total: 1,
+        successful: 1,
+      },
+    },
+    {
+      $sort: { year: 1, month: 1 },
+    },
+  ]);
+
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const results: OrderChartType[] = [];
+
+  for (let i = 5; i >= 0; i--) {
+    const d = subMonths(now, i);
+    const year = d.getFullYear();
+    const month = d.getMonth() + 1;
+
+    const match = raw.find(
+      (item) => item.year === year && item.month === month,
+    );
+
+    results.push({
+      month: monthNames[month - 1] as string,
+      total: match ? match.total : 0,
+      successful: match ? match.successful : 0,
+    });
+  }
+  return res.send(results);
 };

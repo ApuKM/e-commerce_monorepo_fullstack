@@ -13,11 +13,12 @@
   "type": "module",
   "dependencies": {
     "@clerk/express": "^2.1.72",
-    "cors": "^2.8.6",
-    "express": "^5.2.1",
+    "@repo/kafka": "workspace:*",
     "@repo/order-db": "workspace:*",
     "@repo/types": "workspace:*",
-    "@repo/kafka": "workspace:*"
+    "cors": "^2.8.6",
+    "date-fns": "^4.4.0",
+    "express": "^5.2.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
