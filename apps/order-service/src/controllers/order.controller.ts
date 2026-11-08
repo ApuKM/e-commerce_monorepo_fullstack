@@ -4,7 +4,8 @@ import { startOfMonth, subMonths } from "date-fns";
 import { type Request, type Response } from "express";
 
 export const getOrders = async (req: Request, res: Response) => {
-  const orders = await Order.find({});
+  const limit = Number(req.query.limit);
+  const orders = await Order.find({})?.limit(limit).sort({ createdAt: -1 });
   return res.json(orders);
 };
 

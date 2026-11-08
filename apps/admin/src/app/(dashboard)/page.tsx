@@ -37,7 +37,7 @@ const HomePage = async () => {
         <CardList title={"Latest Transactions"} />
       </div>
       <div className="bg-primary-foreground p-4 rounded-lg">
-        <CardList title={"Popular content"} />
+        <CardList title={"Popular Products"} />
       </div>
     </div>
   );
