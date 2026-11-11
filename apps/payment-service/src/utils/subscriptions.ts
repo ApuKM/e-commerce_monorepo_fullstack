@@ -1,37 +1,24 @@
-import { consumer } from "./kafka.ts";
-import { createStripeProduct, deleteStripeProduct } from "./stripeProduct.ts";
+import { consumer } from "./kafka.js";
+import { createStripeProduct, deleteStripeProduct } from "./stripeProduct.js";
 
 export const runKafkaSubscriptions = async () => {
-  // consumer.subscribe("product.created", async (message) => {
-  //   const product = message.value;
-  //   console.log("Received message: product.created", product);
-
-  //   await createStripeProduct(product);
-  // });
-  // consumer.subscribe("product.deleted", async (message) => {
-  //   const productId = message.value;
-  //   console.log("Received message: product.deleted", productId);
-
-  //   await deleteStripeProduct(productId);
-  // });
-  consumer.subscribe([
+  await consumer.subscribe([
     {
       topicName: "product.created",
       topicHandler: async (message) => {
-        const product = message.value;
-        console.log("Received message: product.created", product);
-
-        await createStripeProduct(product);
+        const product = message as { value: { id: string; name: string; price: number } };
+        console.log("Received message: product.created", product.value);
+        await createStripeProduct(product.value);
       },
     },
     {
       topicName: "product.deleted",
       topicHandler: async (message) => {
-        const productId = message.value;
-        console.log("Received message: product.deleted", productId);
-
-        await deleteStripeProduct(productId);
+        const payload = message as { value: number };
+        console.log("Received message: product.deleted", payload.value);
+        await deleteStripeProduct(payload.value);
       },
     },
   ]);
 };
+

@@ -1,13 +1,12 @@
-import { consumer } from "./kafka.ts";
-import { createOrder } from "./order.ts";
+import { consumer } from "./kafka.js";
+import { createOrder } from "./order.js";
 
 export const runKafkaSubscriptions = async () => {
-
-  consumer.subscribe([
+  await consumer.subscribe([
     {
       topicName: "payment.successful",
       topicHandler: async (message) => {
-        const order = message.value;
+        const order = message as Parameters<typeof createOrder>[0];
         await createOrder(order);
       },
     },

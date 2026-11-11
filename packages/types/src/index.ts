@@ -1,4 +1,5 @@
-export * from "./auth.ts";
-export * from "./product.ts";
-export * from "./cart.ts";
-export * from "./order.ts";
+export * from "./auth.js";
+export * from "./product.js";
+export * from "./cart.js";
+export * from "./order.js";
+

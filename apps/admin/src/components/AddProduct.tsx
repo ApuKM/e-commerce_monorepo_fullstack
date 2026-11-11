@@ -35,7 +35,6 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { useAuth } from "@clerk/nextjs";
 
-
 const fetchCategories = async () => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/categories`,
@@ -228,7 +227,9 @@ const AddProduct = () => {
                                     field.onChange([...currentValues, size]);
                                   } else {
                                     field.onChange(
-                                      currentValues.filter((v) => v !== size),
+                                      currentValues.filter(
+                                        (v: (typeof sizes)[number]) => v !== size,
+                                      ),
                                     );
                                   }
                                 }}
@@ -271,7 +272,8 @@ const AddProduct = () => {
                                     } else {
                                       field.onChange(
                                         currentValues.filter(
-                                          (v) => v !== color,
+                                          (v: (typeof colors)[number]) =>
+                                            v !== color,
                                         ),
                                       );
                                     }
@@ -307,7 +309,9 @@ const AddProduct = () => {
                       <FormLabel>Images</FormLabel>
                       <FormControl>
                         <div className="">
-                          {form.watch("colors")?.map((color) => (
+                          {form
+                            .watch("colors")
+                            ?.map((color: (typeof colors)[number]) => (
                             <div
                               className="mb-4 flex items-center gap-4"
                               key={color}

@@ -10,11 +10,14 @@ const AuthenticationTestPage = () => {
 
     console.log("token:", token);
 
-    const response = await fetch("http://localhost:8000/authentication", {
-      headers: {
-        authorization: `Bearer ${token}`,
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/authentication`,
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
 
     const data = await response.json();
     console.log(data);

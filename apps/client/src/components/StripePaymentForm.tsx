@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import type { CartItemsType, ShippingFormType } from "@repo/types";
 
 const stripe = loadStripe(
-  "pk_test_51URAMfLehIOlsxWPvUsAvsQc2t4NNhCE81Pzz8QirZ1KTKiUmkDqFtuSQjWvjR8LbkUrZPXzxVh2GRq6jq4CqeY900hfvg4YI9",
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
 );
 
 const clientSecret = async (cart: CartItemsType, token: string) => {

@@ -11,7 +11,7 @@ const HomePage = async () => {
   const token = await getToken();
 
   const orderChartData = fetch(
-    `${process.env.NEXT_PUBLIC_ORDER_SERVICE_UR}/order-chart`,
+    `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL}/orders/order-chart`,
     {
       headers: {
         Authorization: `Bearer ${token}`,

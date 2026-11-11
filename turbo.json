@@ -1,12 +1,42 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
   "ui": "tui",
-  "globalEnv": ["DATABASE_URL"],
+  "globalEnv": [
+    "DATABASE_URL",
+    "MONGODB_URI",
+    "CLERK_SECRET_KEY",
+    "CLERK_PUBLISHABLE_KEY",
+    "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY",
+    "NEXT_PUBLIC_CLERK_SIGN_IN_URL",
+    "NEXT_PUBLIC_CLERK_SIGN_UP_URL",
+    "NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL",
+    "NEXT_PUBLIC_PRODUCT_SERVICE_URL",
+    "NEXT_PUBLIC_PAYMENT_SERVICE_URL",
+    "NEXT_PUBLIC_ORDER_SERVICE_URL",
+    "NEXT_PUBLIC_AUTH_SERVICE_URL",
+    "NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME",
+    "STRIPE_SECRET_KEY",
+    "STRIPE_WEBHOOK_SECRET",
+    "STRIPE_RETURN_URL",
+    "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY",
+    "KAFKA_BROKERS",
+    "KAFKA_USERNAME",
+    "KAFKA_PASSWORD",
+    "KAFKA_SASL_MECHANISM",
+    "KAFKA_SSL",
+    "ALLOWED_ORIGINS",
+    "NODE_ENV",
+    "PORT"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**", "!.next/dev/**"]
+      "outputs": [".next/**", "!.next/cache/**", "!.next/dev/**", "dist/**"]
+    },
+    "start": {
+      "dependsOn": ["build"],
+      "cache": false
     },
     "lint": {
       "dependsOn": ["^lint"]
@@ -29,3 +59,4 @@
     }
   }
 }
+

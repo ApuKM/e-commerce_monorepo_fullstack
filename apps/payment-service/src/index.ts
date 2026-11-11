@@ -4,25 +4,32 @@ import { clerkMiddleware } from "@clerk/express";
 import { isValidUser } from "./middleware/authmiddleware.js";
 import sessionRouter from "./routes/session.route.js";
 import webhookRouter from "./routes/webhook.route.js";
-import { consumer, producer } from "./utils/kafka.ts";
-import { runKafkaSubscriptions } from "./utils/subscriptions.ts";
+import { consumer, producer } from "./utils/kafka.js";
+import { runKafkaSubscriptions } from "./utils/subscriptions.js";
 
 const app = express();
-const port = 8001;
 
+// Webhook MUST be registered before express.json() to receive the raw body
 app.use("/webhook", webhookRouter);
 
 app.use(clerkMiddleware());
 app.use(express.json());
 
+// CORS: allow origins from env (comma-separated) or localhost for local dev
+const allowedOrigins = (
+  process.env.ALLOWED_ORIGINS ?? "http://localhost:3003,http://localhost:3004"
+)
+  .split(",")
+  .map((o) => o.trim());
+
 app.use(
   cors({
-    origin: ["http://localhost:3003", "http://localhost:3004"],
+    origin: allowedOrigins,
     credentials: true,
   }),
 );
 
-app.get("/health", (req: Request, res: Response) => {
+app.get("/health", (_req: Request, res: Response) => {
   res.status(200).json({
     status: "ok",
     uptime: process.uptime(),
@@ -39,38 +46,20 @@ app.get("/authentication", isValidUser, (req: Request, res: Response) => {
 
 app.use("/sessions", sessionRouter);
 
-// app.post("/create-stripe-product", async (req: Request, res: Response) => {
-//   const response = await stripe.products.create({
-//     id: "123",
-//     name: "Test product",
-//     default_price_data: {
-//       currency: "usd",
-//       unit_amount: 10 * 100,
-//     },
-//   });
-//   return res.send(response);
-// });
-
-// app.get("/stripe-product-price", async (req: Request, res: Response) => {
-//   const response = await stripe.prices.list({
-//     product: "123",
-//   });
-//   return res.send(response);
-// });
+const PORT = Number(process.env.PORT ?? 8001);
 
 const start = async () => {
   try {
-    Promise.all([await producer.connect(), await consumer.connect()]);
-
-    await runKafkaSubscriptions()
-    
-    app.listen(8001, () => {
-      console.log("Payment service is running on 8001");
+    await Promise.all([producer.connect(), consumer.connect()]);
+    await runKafkaSubscriptions();
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`Payment service is running on port ${PORT}`);
     });
   } catch (error) {
-    console.log(error);
+    console.error("Failed to start payment-service:", error);
     process.exit(1);
   }
 };
 
 start();
+

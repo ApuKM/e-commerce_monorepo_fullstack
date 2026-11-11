@@ -2,7 +2,7 @@ import { Request, Response, Router } from "express";
 import stripe from "../utils/stripe.js";
 import Stripe from "stripe";
 import express from "express";
-import { producer } from "../utils/kafka.ts";
+import { producer } from "../utils/kafka.js";
 
 const webhookRouter: Router = Router();
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET as string;
@@ -14,7 +14,6 @@ webhookRouter.post(
     if (!endpointSecret) {
       return response.status(500).send("Webhook secret is missing");
     }
-    //   console.log("Request", request)
     let event: Stripe.Event;
 
     const signature = request.headers["stripe-signature"];
@@ -27,9 +26,8 @@ webhookRouter.post(
       );
     } catch (err) {
       if (err instanceof Error) {
-        console.log("Webhook signature verification failed:", err.message);
+        console.error("Webhook signature verification failed:", err.message);
       }
-
       return response.sendStatus(400);
     }
 
@@ -41,7 +39,8 @@ webhookRouter.post(
           session.id,
         );
 
-        producer.send("payment.successful", {
+        // Await producer.send so the message is confirmed before we respond
+        await producer.send("payment.successful", {
           value: {
             userId: session.client_reference_id,
             email: session.customer_details?.email,
@@ -55,8 +54,6 @@ webhookRouter.post(
           },
         });
 
-        // console.log("Webhook recieved", session);
-        // console.log(event);
         break;
       }
 
@@ -70,3 +67,4 @@ webhookRouter.post(
 );
 
 export default webhookRouter;
+

@@ -1,3 +1,3 @@
-export { createKafkaClient } from "./client.ts";
-export { createProducer } from "./producer.ts";
-export { createConsumer } from "./consumer.ts";
+export { createKafkaClient } from "./client.js";
+export { createProducer } from "./producer.js";
+export { createConsumer } from "./consumer.js";

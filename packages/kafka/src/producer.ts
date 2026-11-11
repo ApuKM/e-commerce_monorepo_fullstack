@@ -6,6 +6,11 @@ export const createProducer = (kafka: Kafka) => {
   const connect = async () => {
     await producer.connect();
   };
+
+  /**
+   * Send a message to a Kafka topic. Always awaited so callers can confirm
+   * delivery before returning an HTTP response.
+   */
   const send = async (topic: string, message: object) => {
     await producer.send({
       topic,

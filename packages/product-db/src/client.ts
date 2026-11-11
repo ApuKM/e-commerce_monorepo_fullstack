@@ -1,14 +1,19 @@
-import dotenv from "dotenv";
-
-dotenv.config({
-  path: "../../.env",
-});
-
 import { PrismaClient } from "../generated/prisma/client.js";
 import { PrismaPg } from "@prisma/adapter-pg";
 
+// DATABASE_URL must be injected by the platform (Railway env, Vercel env, etc.)
+// Never rely on a relative dotenv path in a shared package.
+const connectionString = process.env.DATABASE_URL;
+
+if (!connectionString) {
+  throw new Error(
+    "DATABASE_URL environment variable is not set. " +
+      "Set it in your platform's environment configuration."
+  );
+}
+
 const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL,
+  connectionString,
 });
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };

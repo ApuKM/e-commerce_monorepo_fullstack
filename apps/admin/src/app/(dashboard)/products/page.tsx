@@ -1,6 +1,8 @@
 import { ProductType } from "@repo/types";
-import { columns } from "./columns.tsx";
-import { DataTable } from "./data-table.tsx";
+import { columns } from "./columns";
+import { DataTable } from "./data-table";
+
+export const dynamic = "force-dynamic";
 
 const getData = async (): Promise<ProductType[]> => {
   try {

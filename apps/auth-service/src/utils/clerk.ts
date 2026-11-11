@@ -5,3 +5,4 @@ const clerkClient = createClerkClient({
 });
 
 export default clerkClient;
+
